@@ -73,7 +73,8 @@ class Cv(Widget):
         self.hysteresis += 1
       else:
         self.hysteresis = 22
-        self.p+=.2
+        self.p += 0.1
+        self.p *= 1.1
         for _ in range(int(self.p)+1):
           self.buy_or_sell(*self.clicking)
         self.set_buttons()
@@ -192,49 +193,49 @@ class Cv(Widget):
         self.add_button((.3,.15,.6,.15), "Marketing")
       if self.d["max_net_worth"] > 100:
         self.add_button((.2,.31,.5,.15), "Engineering")
-      if self.d["max_net_worth"] > 1000:
+      if self.d["max_net_worth"] > 10000:
         self.add_button((.19,.47,.48,.08), "IT")
-      if self.d["max_net_worth"] > 100000:
+      if self.d["max_net_worth"] > 10000000:
         self.add_button((.18,.7,.4,.12), "C-Suite")
-      if self.d["max_net_worth"] > 1000000:
+      if self.d["max_net_worth"] > 1000000000:
         self.add_button((.69,.01,.3,.09), "Suburbs")
 
     else:
       self.add_button((.05,.025,.15,.05), "Back")
       self.add_icon((0,.65,.1), "Paperclips")
-      self.add_button((.05,.65,.3,.1), f"Scrounge\nfor Paperclips\n#: {self.i['Paperclips']}")
+      self.add_button((.05,.65,.3,.1), f"Scrounge\nfor Paperclips\n#: {self.i['Paperclips']:,}")
       self.add_button((.65,.65,.3,.1), "Gossip")
 
       if self.d["max_net_worth"] > 1:
         self.add_icon((0,.54,.1), "Pens")
         self.add_button((.05,.54,.3,.1), 
-                        f"Buy Pens\n#: {self.supply['Pens'][0]}\n{self.supply['Pens'][1]}c")
+                        f"Buy Pens\n#: {self.supply['Pens'][0]:,}\n{self.supply['Pens'][1]:,}c")
         self.add_button((.65,.54,.3,.1), 
-                        f"Sell Pens\n#: {self.i['Pens']}\n{self.supply['Pens'][1]}c")
+                        f"Sell Pens\n#: {self.i['Pens']:,}\n{self.supply['Pens'][1]:,}c")
       if self.d["max_net_worth"] > 100:
         self.add_icon((0,.43,.1), "Markers")
         self.add_button((.05,.43,.3,.1), 
-                        f"Buy Markers\n#: {self.supply['Markers'][0]}\n{self.supply['Markers'][1]}c")
+                        f"Buy Markers\n#: {self.supply['Markers'][0]:,}\n{self.supply['Markers'][1]:,}c")
         self.add_button((.65,.43,.3,.1), 
-                        f"Sell Markers\n#: {self.i['Markers']}\n{self.supply['Markers'][1]}c")
-      if self.d["max_net_worth"] > 1000:
+                        f"Sell Markers\n#: {self.i['Markers']:,}\n{self.supply['Markers'][1]:,}c")
+      if self.d["max_net_worth"] > 10000:
         self.add_icon((0,.32,.1), "Paper")
         self.add_button((.05,.32,.3,.1), 
-                        f"Buy Paper\n#: {self.supply['Paper'][0]}\n{self.supply['Paper'][1]}c")
+                        f"Buy Paper\n#: {self.supply['Paper'][0]:,}\n{self.supply['Paper'][1]:,}c")
         self.add_button((.65,.32,.3,.1), 
-                        f"Sell Paper\n#: {self.i['Paper']}\n{self.supply['Paper'][1]}c")
-      if self.d["max_net_worth"] > 10000:
+                        f"Sell Paper\n#: {self.i['Paper']:,}\n{self.supply['Paper'][1]:,}c")
+      if self.d["max_net_worth"] > 300000:
         self.add_icon((0,.21,.1), "Heater")
         self.add_button((.05,.21,.3,.1), 
-                        f"Buy Heater\n#: {self.supply['Heater'][0]}\n{self.supply['Heater'][1]}c")
+                        f"Buy Heater\n#: {self.supply['Heater'][0]:,}\n{self.supply['Heater'][1]:,}c")
         self.add_button((.65,.21,.3,.1), 
-                        f"Sell Heater\n#: {self.i['Heater']}\n{self.supply['Heater'][1]}c")
-      if self.d["max_net_worth"] > 100000:
+                        f"Sell Heater\n#: {self.i['Heater']:,}\n{self.supply['Heater'][1]:,}c")
+      if self.d["max_net_worth"] > 10000000:
         self.add_icon((0,.1,.1), "Chair")
         self.add_button((.05,.1,.3,.1), 
-                        f"Buy Chair\n#: {self.supply['Chair'][0]}\n{self.supply['Chair'][1]}c")
+                        f"Buy Chair\n#: {self.supply['Chair'][0]:,}\n{self.supply['Chair'][1]:,}c")
         self.add_button((.65,.1,.3,.1), 
-                        f"Sell Chair\n#: {self.i['Chair']}\n{self.supply['Chair'][1]}c")
+                        f"Sell Chair\n#: {self.i['Chair']:,}\n{self.supply['Chair'][1]:,}c")
 
     with open("inventory.json","w") as fl:
       json.dump(self.i, fl, indent=2, sort_keys=True)

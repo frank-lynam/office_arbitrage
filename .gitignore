@@ -1,4 +1,7 @@
 *.old
+inventory.json
 prompts.txt
 todo
 bin/
+.venv/
+.buildozer/

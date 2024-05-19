@@ -1,250 +1,70 @@
 {
-  "locations": [
-    "C-Suite",
-    "Engineering",
-    "HR",
-    "IT",
-    "Marketing",
-    "Suburbs",
-    "The Office"
-  ],
-  "max_net_worth": 4,
+  "locations": ["C-Suite", "Engineering", "HR", "IT", "Marketing", "Suburbs", "The Office"], 
+  "max_net_worth": 4, 
   "supply": {
     "C-Suite": {
-      "Chair": [
-        1000,
-        0.8,
-        0.9
-      ],
-      "Heater": [
-        10,
-        1.2,
-        1.3
-      ],
-      "Markers": [
-        100,
-        1.2,
-        1.3
-      ],
-      "Paper": [
-        1,
-        1.2,
-        1.3
-      ],
-      "Paperclips": [
-        0,
-        0.8,
-        1.6
-      ],
-      "Pens": [
-        2,
-        1.2,
-        1.3
-      ],
-      "Stickies": [
-        100,
-        1.2,
-        1.3
-      ]
-    },
+      "Chair"     : [ 1000, 0.8, 0.9 ], 
+      "Heater"    : [   10, 1.2, 1.3 ], 
+      "Markers"   : [  100, 1.2, 1.3 ], 
+      "Paper"     : [    1, 1.2, 1.3 ], 
+      "Paperclips": [    0, 0.8, 1.6 ], 
+      "Pens"      : [    2, 1.2, 1.3 ], 
+      "Stickies"  : [  100, 1.2, 1.3 ]
+    }, 
     "Engineering": {
-      "Chair": [
-        0,
-        1.2,
-        1.4
-      ],
-      "Heater": [
-        100,
-        0.8,
-        1.1
-      ],
-      "Markers": [
-        100,
-        0.9,
-        1.1
-      ],
-      "Paper": [
-        0,
-        0.9,
-        1.1
-      ],
-      "Paperclips": [
-        10000,
-        0.9,
-        1.1
-      ],
-      "Pens": [
-        1000,
-        0.8,
-        1.2
-      ],
-      "Stickies": [
-        1000,
-        0.8,
-        1.1
-      ]
-    },
+      "Chair"     : [     0, 1.2, 1.4 ], 
+      "Heater"    : [   100, 0.8, 1.1 ], 
+      "Markers"   : [   100, 0.9, 1.1 ], 
+      "Paper"     : [     0, 0.9, 1.1 ], 
+      "Paperclips": [ 10000, 0.9, 1.1 ], 
+      "Pens"      : [  1000, 0.8, 1.2 ], 
+      "Stickies"  : [  1000, 0.8, 1.1 ]
+    }, 
     "HR": {
-      "Chair": [
-        0,
-        1.0,
-        1.6
-      ],
-      "Heater": [
-        0,
-        1.2,
-        2.0
-      ],
-      "Markers": [
-        10000,
-        0.9,
-        1.2
-      ],
-      "Paper": [
-        0,
-        0.8,
-        1.2
-      ],
-      "Paperclips": [
-        1000,
-        0.8,
-        1.2
-      ],
-      "Pens": [
-        100,
-        0.8,
-        1.2
-      ],
-      "Stickies": [
-        10000,
-        0.8,
-        1.2
-      ]
-    },
+      "Chair"     : [     0, 1.0, 1.6 ], 
+      "Heater"    : [     0, 1.0, 1.5 ], 
+      "Markers"   : [ 10000, 0.9, 1.2 ], 
+      "Paper"     : [     0, 0.8, 1.2 ], 
+      "Paperclips": [  1000, 0.8, 1.2 ], 
+      "Pens"      : [   100, 0.8, 1.2 ], 
+      "Stickies"  : [ 10000, 0.8, 1.2 ]
+    }, 
     "IT": {
-      "Chair": [
-        0,
-        1.2,
-        1.7
-      ],
-      "Heater": [
-        0,
-        0.8,
-        1.0
-      ],
-      "Markers": [
-        10,
-        1.2,
-        1.4
-      ],
-      "Paper": [
-        10000,
-        0.6,
-        1.1
-      ],
-      "Paperclips": [
-        100,
-        0.9,
-        1.1
-      ],
-      "Pens": [
-        100,
-        0.8,
-        1.2
-      ],
-      "Stickies": [
-        1000,
-        0.8,
-        1.2
-      ]
-    },
+      "Chair"     : [     0, 1.2, 1.7 ], 
+      "Heater"    : [     0, 0.8, 1.0 ], 
+      "Markers"   : [    10, 1.2, 1.4 ], 
+      "Paper"     : [ 10000, 0.6, 1.1 ], 
+      "Paperclips": [   100, 0.9, 1.1 ], 
+      "Pens"      : [   100, 0.8, 1.2 ], 
+      "Stickies"  : [  1000, 0.8, 1.2 ]
+    }, 
     "Marketing": {
-      "Chair": [
-        0,
-        1.2,
-        1.5
-      ],
-      "Heater": [
-        0,
-        1.2,
-        1.6
-      ],
-      "Markers": [
-        1000,
-        0.7,
-        1.0
-      ],
-      "Paper": [
-        0,
-        0.9,
-        1.4
-      ],
-      "Paperclips": [
-        0,
-        0.9,
-        1.1
-      ],
-      "Pens": [
-        100,
-        0.8,
-        1.2
-      ],
-      "Stickies": [
-        100,
-        0.7,
-        1.3
-      ]
-    },
+      "Chair"     : [    0, 1.2, 1.5 ], 
+      "Heater"    : [    0, 1.2, 1.4 ], 
+      "Markers"   : [ 1000, 0.7, 1.0 ], 
+      "Paper"     : [    0, 0.9, 1.4 ], 
+      "Paperclips": [    0, 0.9, 1.1 ], 
+      "Pens"      : [  100, 0.8, 1.2 ], 
+      "Stickies"  : [  100, 0.7, 1.3 ]
+    }, 
     "Suburbs": {
-      "Chair": [
-        0,
-        1.4,
-        2.4
-      ],
-      "Heater": [
-        0,
-        1.4,
-        2.4
-      ],
-      "Markers": [
-        0,
-        1.4,
-        2.4
-      ],
-      "Paper": [
-        0,
-        1.4,
-        2.4
-      ],
-      "Paperclips": [
-        0,
-        1.4,
-        2.4
-      ],
-      "Pens": [
-        0,
-        1.4,
-        2.4
-      ],
-      "Stickies": [
-        0,
-        1.4,
-        2.4
-      ]
-    },
-    "Template": [
-      "stock",
-      "min price",
-      "max price"
-    ]
-  },
+      "Chair"     : [ 0, 1.4, 2.4 ], 
+      "Heater"    : [ 0, 1.4, 2.4 ], 
+      "Markers"   : [ 0, 1.4, 2.4 ], 
+      "Paper"     : [ 0, 1.4, 2.4 ], 
+      "Paperclips": [ 0, 1.4, 2.4 ], 
+      "Pens"      : [ 0, 1.4, 2.4 ], 
+      "Stickies"  : [ 0, 1.4, 2.4 ]
+    }, 
+    "Template": ["stock", "min price", "max price"]
+  }, 
   "values": {
-    "Chair": 32178,
-    "Heater": 2754,
-    "Markers": 63,
-    "Paper": 524,
-    "Paperclips": 1,
-    "Pens": 31,
+    "Chair": 32178, 
+    "Heater": 2754, 
+    "Markers": 63, 
+    "Paper": 524, 
+    "Paperclips": 1, 
+    "Pens": 31, 
     "Stickies": 4
   }
 }
