@@ -21,6 +21,9 @@ class Cv(Widget):
   
     with open("data.json") as fl:
       self.d = json.load(fl)
+    if "market.json" in os.listdir():
+      with open("market.json") as fl:
+        self.d["supply"] = json.load(fl)
 
     if "inventory.json" in os.listdir():
       with open("inventory.json") as fl:
@@ -63,12 +66,27 @@ class Cv(Widget):
       self.score_label = Label(font_size=self.height/40, bold=True, outline_width=3)
       self.score = Rectangle(size=(0,0), pos=(0,0))
 
+      Color(.2,.2,.2,.4)
+      self.modal_bg = Rectangle(size=(0,0), pos=(0,0))
+      Color(1,1,1,1)
+      self.modal_label = None
+      self.modal = Rectangle(size=(0,0), pos=(0,0), outline_width=3)
+
     self.label_text = ["" for x in range(len(self.buttons))]
     self.bind(size=self.resize)
     EventLoop.window.bind(on_keyboard=self.hook_keyboard)
 
+  def add_modal(self, text):
+    self.can_clear_modal = False
+    self.modal.size=self.size
+    self.modal_bg.size=self.size
+    self.modal_label = Label(text=text, font_size=self.height/50, 
+      outline_width=3, halign='center', valign='middle', size=self.size)
+    self.modal_label.refresh()
+    self.modal.texture = self.modal_label.texture
+
   def momentum(self, *args):
-    if self.clicking:
+    if self.clicking and self.modal.size[0]==0:
       if self.hysteresis < 25:
         self.hysteresis += 1
       else:
@@ -101,6 +119,12 @@ class Cv(Widget):
   def net_worth(self):
     x = sum([self.i[x]*self.d["values"][x] for x in self.d["values"].keys()])
     if "max_net_worth" not in self.d or x > self.d["max_net_worth"]:
+      modal_msg = ""
+      for y,z in self.d["unlocks"].items():
+        if x>=z and self.d["max_net_worth"] < z:
+          modal_msg += f"\nUnlocked {y}!"
+      if self.d["max_net_worth"] >=0  and modal_msg != "":
+        self.add_modal(modal_msg)
       self.d["max_net_worth"] = x
     return x
 
@@ -152,6 +176,7 @@ class Cv(Widget):
   def on_touch_down(self, t):
     self.hysteresis = 0
     self.p = 0
+    self.can_clear_modal = True
     self.on_touch_move(t)
 
   def on_touch_move(self, t):
@@ -189,16 +214,23 @@ class Cv(Widget):
 
     if self.location == "The Office":
       self.add_button((.16,.56,.5,.13), "HR")
-      if self.d["max_net_worth"] > 10:
+      if self.d["max_net_worth"] >= self.d["unlocks"]["Marketing"]:
         self.add_button((.3,.15,.6,.15), "Marketing")
-      if self.d["max_net_worth"] > 100:
+      if self.d["max_net_worth"] >= self.d["unlocks"]["Engineering"]:
         self.add_button((.2,.31,.5,.15), "Engineering")
-      if self.d["max_net_worth"] > 10000:
+      if self.d["max_net_worth"] >= self.d["unlocks"]["IT"]:
         self.add_button((.19,.47,.48,.08), "IT")
-      if self.d["max_net_worth"] > 10000000:
+      if self.d["max_net_worth"] >= self.d["unlocks"]["C-Suite"]:
         self.add_button((.18,.7,.4,.12), "C-Suite")
-      if self.d["max_net_worth"] > 1000000000:
-        self.add_button((.69,.01,.3,.09), "Suburbs")
+      if self.d["max_net_worth"] >= self.d["unlocks"]["Suburbs"]:
+        self.add_button((.6,.01,.39,.13), "Suburbs")
+      if self.d["max_net_worth"] >= self.d["unlocks"]["Buyout"]:
+        self.add_button((.25,.83,.5,.1), "Buyout")
+
+    elif self.location == "Buyout":
+      self.add_gossip("You can buyout your company!\n\nYou'll lose all inventory and net worth, but the markets will be randomized.")
+      self.add_button((.05,.025,.15,.05), "Back")
+      self.add_button((.25,.45,.5,.1), "Do it!")
 
     else:
       self.add_button((.05,.025,.15,.05), "Back")
@@ -206,31 +238,31 @@ class Cv(Widget):
       self.add_button((.05,.65,.3,.1), f"Scrounge\nfor Paperclips\n#: {self.i['Paperclips']:,}")
       self.add_button((.65,.65,.3,.1), "Gossip")
 
-      if self.d["max_net_worth"] > 1:
+      if self.d["max_net_worth"] >= self.d["unlocks"]["Pens"]:
         self.add_icon((0,.54,.1), "Pens")
         self.add_button((.05,.54,.3,.1), 
                         f"Buy Pens\n#: {self.supply['Pens'][0]:,}\n{self.supply['Pens'][1]:,}c")
         self.add_button((.65,.54,.3,.1), 
                         f"Sell Pens\n#: {self.i['Pens']:,}\n{self.supply['Pens'][1]:,}c")
-      if self.d["max_net_worth"] > 100:
+      if self.d["max_net_worth"] >= self.d["unlocks"]["Markers"]:
         self.add_icon((0,.43,.1), "Markers")
         self.add_button((.05,.43,.3,.1), 
                         f"Buy Markers\n#: {self.supply['Markers'][0]:,}\n{self.supply['Markers'][1]:,}c")
         self.add_button((.65,.43,.3,.1), 
                         f"Sell Markers\n#: {self.i['Markers']:,}\n{self.supply['Markers'][1]:,}c")
-      if self.d["max_net_worth"] > 10000:
+      if self.d["max_net_worth"] >= self.d["unlocks"]["Paper"]:
         self.add_icon((0,.32,.1), "Paper")
         self.add_button((.05,.32,.3,.1), 
                         f"Buy Paper\n#: {self.supply['Paper'][0]:,}\n{self.supply['Paper'][1]:,}c")
         self.add_button((.65,.32,.3,.1), 
                         f"Sell Paper\n#: {self.i['Paper']:,}\n{self.supply['Paper'][1]:,}c")
-      if self.d["max_net_worth"] > 300000:
+      if self.d["max_net_worth"] >= self.d["unlocks"]["Heater"]:
         self.add_icon((0,.21,.1), "Heater")
         self.add_button((.05,.21,.3,.1), 
                         f"Buy Heater\n#: {self.supply['Heater'][0]:,}\n{self.supply['Heater'][1]:,}c")
         self.add_button((.65,.21,.3,.1), 
                         f"Sell Heater\n#: {self.i['Heater']:,}\n{self.supply['Heater'][1]:,}c")
-      if self.d["max_net_worth"] > 10000000:
+      if self.d["max_net_worth"] >= self.d["unlocks"]["Chair"]:
         self.add_icon((0,.1,.1), "Chair")
         self.add_button((.05,.1,.3,.1), 
                         f"Buy Chair\n#: {self.supply['Chair'][0]:,}\n{self.supply['Chair'][1]:,}c")
@@ -252,7 +284,26 @@ class Cv(Widget):
 
   def on_touch_up(self, t):
 
-    if self.location != "The Office":
+    if self.modal.size[0]!=0:
+      if self.can_clear_modal == False:
+        self.can_clear_modal = True
+      else:
+        self.modal.size=(0,0)
+        self.modal_bg.size=(0,0)
+
+    elif self.location != "The Office":
+      if self.clicked(t, "Do it!"):
+        self.location = "The Office"
+        self.d["max_net_worth"] = 0 
+        self.i = {x:0 for x in self.d["values"].keys()}
+        self.d["supply"] = {x:{y:[int(random.random()*10000), 
+          random.random() + 0.5, random.random() + 0.5] 
+          for y in self.d["supply"][x].keys()} for x in self.d["supply"].keys()}
+        with open("market.json", "w") as fl:
+          json.dump(self.d["supply"], fl)
+        self.add_gossip("")
+        self.add_modal("You've bought the company!\n\nReady to buy another?")
+
       if self.clicked(t, "Scrounge"):
         if random.random()>0.5:
           self.add_gossip("Found a paperclip!")

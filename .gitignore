@@ -1,5 +1,7 @@
+*.swp
 *.old
 inventory.json
+market.json
 prompts.txt
 todo
 bin/
