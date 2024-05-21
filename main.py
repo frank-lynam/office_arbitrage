@@ -66,7 +66,7 @@ class Cv(Widget):
       self.score_label = Label(font_size=self.height/40, bold=True, outline_width=3)
       self.score = Rectangle(size=(0,0), pos=(0,0))
 
-      Color(.2,.2,.2,.4)
+      Color(.2,.2,.2,.7)
       self.modal_bg = Rectangle(size=(0,0), pos=(0,0))
       Color(1,1,1,1)
       self.modal_label = None
@@ -93,22 +93,27 @@ class Cv(Widget):
         self.hysteresis = 22
         self.p += 0.1
         self.p *= 1.1
-        for _ in range(int(self.p)+1):
-          self.buy_or_sell(*self.clicking)
+        self.buy_or_sell(*self.clicking, n=int(self.p)+1)
         self.set_buttons()
 
-  def buy_or_sell(self, x, buying):
+  def buy_or_sell(self, x, buying, n=1):
     if "supply" not in dir(self) or x not in self.supply:
       return
     if (buying and self.i["Paperclips"] >= self.supply[x][1]
         and self.supply[x][0] > 0):
-      self.supply[x][0] -= 1
-      self.i["Paperclips"] -= self.supply[x][1]
-      self.i[x] += 1
+      if n * self.supply[x][1] > self.i["Paperclips"]:
+        n = int(self.i["Paperclips"] / self.supply[x][1])
+      if n > self.supply[x][0]:
+        n = self.supply[x][0]
+      self.supply[x][0] -= n
+      self.i["Paperclips"] -= n*self.supply[x][1]
+      self.i[x] += n
     elif not buying and self.i[x] > 0:
-      self.supply[x][0] += 1
-      self.i["Paperclips"] += self.supply[x][1]
-      self.i[x] -= 1
+      if n > self.i[x]:
+        n = self.i[x]
+      self.supply[x][0] += n
+      self.i["Paperclips"] += n*self.supply[x][1]
+      self.i[x] -= n
 
   def get_supply(self):
     if self.location in self.d["supply"]:
