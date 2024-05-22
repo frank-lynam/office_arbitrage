@@ -19,17 +19,29 @@ class Cv(Widget):
 
     super(Cv, self).__init__()
   
+    try:
+      from android.permissions import request_permissions, Permission
+      request_permissions([Permission.WRITE_EXTERNAL_STORAGE])
+
+      from android.storage import app_storage_path
+      self.storage_path = app_storage_path()
+
+    except Exception as e:
+      self.storage_path = os.getcwd()
+
     with open("data.json") as fl:
       self.d = json.load(fl)
-    if "market.json" in os.listdir():
-      with open("market.json") as fl:
+
+    if ".market.json" in os.listdir(self.storage_path):
+      with open(f"{self.storage_path}/.market.json") as fl:
         self.d["supply"] = json.load(fl)
 
-    if "inventory.json" in os.listdir():
-      with open("inventory.json") as fl:
+    if ".inventory.json" in os.listdir(self.storage_path):
+      with open(f"{self.storage_path}/.inventory.json") as fl:
         self.i = json.load(fl)
     else:
       self.i = {x:0 for x in self.d["values"].keys()}
+      self.i["Wins"] = 0
 
     with open("gossip.json") as fl:
       self.library = json.load(fl)
@@ -38,7 +50,7 @@ class Cv(Widget):
     self.history = ["The Office"]
     self.get_supply()
 
-    Clock.schedule_once(self.resize, 0.1)
+    Clock.schedule_once(self.startup, 0.11)
     Clock.schedule_interval(self.momentum, 0.02)
     self.hysteresis = 0
     self.p = 0
@@ -47,6 +59,10 @@ class Cv(Widget):
     with self.canvas:
       self.rect=Rectangle(texture=Image(f"imgs/{self.location}.png").texture,
                           size=(self.width,self.height), pos=(0,0))
+
+      self.stars = [Rectangle(texture=Image(f"imgs/Stars/{x}.png", mipmap=True).texture,
+                              size=(100,100), pos=(-1000,0)) for x in range(8)]
+
       Color(.8,1,.5,1)
       self.buttons=[Line(points=(0,0),width=2) for x in range(30)]
 
@@ -75,6 +91,9 @@ class Cv(Widget):
     self.label_text = ["" for x in range(len(self.buttons))]
     self.bind(size=self.resize)
     EventLoop.window.bind(on_keyboard=self.hook_keyboard)
+
+  def startup(self, *args):
+    self.resize()
 
   def add_modal(self, text):
     self.can_clear_modal = False
@@ -170,7 +189,7 @@ class Cv(Widget):
       self.set_buttons()
       return True
 
-  def resize(self, a, b=0):
+  def resize(self, *args):
     self.rect.size=self.size
     self.textr = [Label(font_size=self.height/50, bold=True, outline_width=2,
                         halign='center', valign='middle') 
@@ -207,6 +226,11 @@ class Cv(Widget):
     self.score.pos=(0,self.height-self.score_label.texture.height)
 
     self.net_worth()
+
+    if self.i["Wins"] > 0:
+      for x in range(min([8,self.i["Wins"]])):
+        self.stars[x].pos = (random.random() * (self.width - 100),
+                             random.random() * (self.height - 100))
 
     for x in range(len(self.buttons)):
       self.buttons[x].points=(0,0)
@@ -274,7 +298,7 @@ class Cv(Widget):
         self.add_button((.65,.1,.3,.1), 
                         f"Sell Chair\n#: {self.i['Chair']:,}\n{self.supply['Chair'][1]:,}c")
 
-    with open("inventory.json","w") as fl:
+    with open(f"{self.storage_path}/.inventory.json","w") as fl:
       json.dump(self.i, fl, indent=2, sort_keys=True)
 
   def add_gossip(self, text):
@@ -300,11 +324,13 @@ class Cv(Widget):
       if self.clicked(t, "Do it!"):
         self.location = "The Office"
         self.d["max_net_worth"] = 0 
+        wins = self.i["Wins"]
         self.i = {x:0 for x in self.d["values"].keys()}
+        self.i["Wins"] = wins + 1
         self.d["supply"] = {x:{y:[int(random.random()*10000), 
           random.random() + 0.5, random.random() + 0.5] 
           for y in self.d["supply"][x].keys()} for x in self.d["supply"].keys()}
-        with open("market.json", "w") as fl:
+        with open(f"{self.storage_path}/.market.json", "w") as fl:
           json.dump(self.d["supply"], fl)
         self.add_gossip("")
         self.add_modal("You've bought the company!\n\nReady to buy another?")
